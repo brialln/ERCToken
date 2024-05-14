@@ -1,0 +1,31 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+
+contract MyToken is ERC20 {
+    using SafeMath for uint256;
+
+    address payable public owner;
+    uint256 public tokenPrice; // Token price in Wei
+
+    constructor(uint256 initialSupply, uint256 _tokenPrice) ERC20("MyToken", "MTK") {
+        _mint(msg.sender, initialSupply);
+        owner = payable(msg.sender);
+        tokenPrice = _tokenPrice;
+    }
+
+    receive() external payable {
+        uint256 amount = msg.value.div(tokenPrice);
+        require(amount > 0, "Insufficient Ether sent");
+
+        _mint(msg.sender, amount);
+        owner.transfer(msg.value);
+    }
+
+    function setTokenPrice(uint256 _tokenPrice) external {
+        require(msg.sender == owner, "Only owner can set token price");
+        tokenPrice = _tokenPrice;
+    }
+}
