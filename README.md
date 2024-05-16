@@ -1,4 +1,4 @@
-# ERCToken
+# ERC20 Token
 # Overview
 This smart contract utilizes ERC20 token and deploys it using HardHat or Remix. 
 Once deployed, the contract owner should be able to mint tokens to a provided address and any user should be 
